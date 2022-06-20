@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Muzakki extends Model
 {
-    use HasFactory;
-
     protected $table = 'muzakki';
     protected $fillable =  [
         'nama',
@@ -16,6 +14,7 @@ class Muzakki extends Model
         'no_hp',
         'jml_tanggungan'
     ];
+    use HasFactory;
 
     protected $hidden = [];
 }

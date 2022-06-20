@@ -18,12 +18,8 @@ class MuzakkiController extends Controller
     public function index()
     {
         $data = Muzakki::all();
-
-        if ($data) {
-            return ApiFormatter::createApi(200, 'Succes', $data);
-        } else {
-            return ApiFormatter::createApi(400, 'Failed');
-        }
+        return response()->json(['message'=>'succes',
+            'data'=>$data],200);
     }
 
     /**
@@ -44,31 +40,17 @@ class MuzakkiController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $request->validate([
-                'nama' => 'required',
-                'alamat' => 'required',
-                'no_hp' => 'required',
-                'jml_tanggungan' => 'required',
-            ]);
+    $request->validate(
+        [
+            'nama' => 'required',
+            'alamat' => 'required',
+            'no_hp' => 'required',
+            'jml_tanggungan' => 'required',
+        ]);
+    $muzakki = Muzakki::create($request->all());
 
-            $muzakki = Muzakki::create([
-                'nama' => $request->nama,
-                'alamat' => $request->alamat,
-                'no_hp' => $request->no_hp,
-                'jml_tanggungan' => $request->jml_tanggungan
-            ]);
-
-            $data = Muzakki::where('id', '=', $muzakki->id)->get();
-
-            if ($data) {
-                return ApiFormatter::createApi(200, 'Succes', $data);
-            } else {
-                return ApiFormatter::createApi(400, 'Failed');
-            }
-        } catch (Exception $error) {
-            return ApiFormatter::createApi(400, 'Failed');
-        }
+    return  response()->json(['message' => 'Succes',
+        'data'=> $muzakki], 200);
     }
 
     /**
@@ -79,13 +61,8 @@ class MuzakkiController extends Controller
      */
     public function show($id)
     {
-        $data = Muzakki::where('id', '=', $id)->get();
-
-        if ($data) {
-            return ApiFormatter::createApi(200, 'Succes', $data);
-        } else {
-            return ApiFormatter::createApi(400, 'Failed');
-        }
+        $data = Muzakki::find($id);
+        return response()->json($data);
     }
 
     /**
@@ -108,33 +85,14 @@ class MuzakkiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            $request->validate([
-                'nama' => 'required',
-                'alamat' => 'required',
-                'no_hp' => 'required',
-                'jml_tanggungan' => 'required',
-            ]);
+        $muzakki = Muzakki::find($id);
 
-            $muzakki = Muzakki::findOrFail($id);
+        $muzakki->update($request->all());
 
-            $muzakki->update([
-                'nama' => $request->nama,
-                'alamat' => $request->alamat,
-                'no_hp' => $request->no_hp,
-                'jml_tanggungan' => $request->jml_tanggungan
-            ]);
-
-            $data = Muzakki::where('id', '=', $muzakki->id)->get();
-
-            if ($data) {
-                return ApiFormatter::createApi(200, 'Succes', $data);
-            } else {
-                return ApiFormatter::createApi(400, 'Failed');
-            }
-        } catch (Exception $error) {
-            return ApiFormatter::createApi(400, 'Failed');
-        }
+        return response()->json([
+            'message' => 'Success',
+            'data' => $muzakki
+        ],200);
     }
 
     /**
@@ -145,18 +103,14 @@ class MuzakkiController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $muzakki = Muzakki::findOrFail($id);
-
-            $data = $muzakki->delete();
-
-            if ($data) {
-                return ApiFormatter::createApi(200, 'Succes Destroy Data');
-            } else {
-                return ApiFormatter::createApi(400, 'Failed');
-            }
-        } catch (Exception $error) {
-            return ApiFormatter::createApi(400, 'Failed');
+        {
+            $muzakki = Muzakki::find($id);
+            $muzakki->delete();
+    
+            return response()->json([
+                'message' => 'Deleted',
+                'data' => $muzakki
+            ],200);
         }
     }
 }

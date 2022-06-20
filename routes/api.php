@@ -15,12 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('muzakki', [MuzakkiController::class, 'index']);
-Route::post('muzakki/store', [MuzakkiController::class, 'store']);
-Route::get('muzakki/show/{id}', [MuzakkiController::class, 'show']);
-Route::post('muzakki/update/{id}', [MuzakkiController::class, 'update']);
-Route::get('muzakki/destroy/{id}', [MuzakkiController::class, 'destroy']);
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('muzakki', \App\Http\Controllers\API\MuzakkiController::class);
+
+// Route::get('muzakki', [MuzakkiController::class, 'index']);
+// Route::post('muzakki/store', [MuzakkiController::class, 'store']);
+// Route::get('muzakki/show/{id}', [MuzakkiController::class, 'show']);
+// Route::post('muzakki/update/{id}', [MuzakkiController::class, 'update']);
+// Route::get('muzakki/destroy/{id}', [MuzakkiController::class, 'destroy']);
